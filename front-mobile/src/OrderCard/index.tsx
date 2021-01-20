@@ -1,8 +1,22 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View,  } from 'react-native';
+import { Order } from '../Types';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
+import relativeTime from 'dayjs/plugin/relativeTime'
 
+dayjs.locale('pt-br');
+dayjs.extend(relativeTime)
 
-function OrderCard() {
+type Props = {
+    order : Order;
+}
+
+function dateFromNow(date: string){
+    return dayjs(date).fromNow();
+}
+
+function OrderCard( { order } : Props) {
 
     const handleOnPress = ()=>{
 
@@ -11,17 +25,17 @@ function OrderCard() {
         <View style={styles.container} >
             <View style={styles.header}>
                 <Text style={styles.orderName}>
-                    Pedido 1
+                    Pedido {order.id}
                 </Text>
                 <Text style={styles.orderPrice}>
-                    $ 45,00
+                    $ {order.total}
                 </Text>
             </View>
-            <Text style={styles.text}> Há 30 minutos atrás</Text>
+            <Text style={styles.text}> { dateFromNow(order.moment) }</Text>
             <View style={styles.productsList}>
-                <Text style={styles.text}> Pizza Calabreza </Text>
-                <Text style={styles.text}> Pizza Marguerita </Text>
-                <Text style={styles.text}> Miojão </Text>
+                {order.products.map(product => (
+                    <Text key={product.id} style={styles.text}> { product.name } </Text>
+                ))}
             </View>
         </View>
     );
