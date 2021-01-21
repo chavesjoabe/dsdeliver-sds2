@@ -11,6 +11,15 @@ dayjs.extend(relativeTime)
 type Props = {
     order : Order;
 }
+export function formatPrice(price: number){
+  const formatter = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      minimumFractionDigits: 2
+  });
+
+  return formatter.format(price);
+}
 
 function dateFromNow(date: string){
     return dayjs(date).fromNow();
@@ -28,7 +37,7 @@ function OrderCard( { order } : Props) {
                     Pedido {order.id}
                 </Text>
                 <Text style={styles.orderPrice}>
-                    $ {order.total}
+                    {formatPrice(order.total)}
                 </Text>
             </View>
             <Text style={styles.text}> { dateFromNow(order.moment) }</Text>
