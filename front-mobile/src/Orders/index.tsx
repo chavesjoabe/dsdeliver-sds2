@@ -10,8 +10,8 @@ import { Order } from '../Types';
 function Orders() {
 
     const INTERNAL_SERVER_ERROR = "internal server error";
-    const [ orders, setOrders ] =  useState<Order[]>([]);
-    const [ isLoading, setIsLoading ] = useState(false)
+    const [orders, setOrders] = useState<Order[]>([]);
+    const [isLoading, setIsLoading] = useState(false)
     const navigation = useNavigation();
     const isFocused = useIsFocused();
 
@@ -24,42 +24,47 @@ function Orders() {
     }
 
     useEffect(() => {
-        if (isFocused){
+        if (isFocused) {
             fetchData();
         }
     }, [isFocused]);
 
 
 
-    const handleOnPress = (order : Order)=>{
-        navigation.navigate('OrderDetails',{
+    const handleOnPress = (order: Order) => {
+        navigation.navigate('OrderDetails', {
             order
         });
-      }
+    }
 
     return (
         <>
             <Header />
             <ScrollView style={styles.container}>
-                { isLoading ? 
+
+                {isLoading ?
                     (<Text> Buscando Pedidos ...</Text>) : (
-                    orders.map(order =>(
-                        <TouchableWithoutFeedback 
-                            key={order.id} 
-                            onPress={ () => handleOnPress(order) }>
-                            <OrderCard order={order}/>
-                        </TouchableWithoutFeedback>
-                    ))
-                )}
+
+                        orders.map(order => (
+                            <TouchableWithoutFeedback
+                                key={order.id}
+                                onPress={() => handleOnPress(order)}>
+                                <OrderCard order={order} />
+
+
+                            </TouchableWithoutFeedback>
+                        ))
+                    )}
             </ScrollView>
         </>
     );
 }
 
-const styles = StyleSheet.create({ container:{
-    paddingRight: '5%',
-    paddingLeft: '5%',
- }
+const styles = StyleSheet.create({
+    container: {
+        paddingRight: '5%',
+        paddingLeft: '5%',
+    }
 });
 
 export default Orders;
